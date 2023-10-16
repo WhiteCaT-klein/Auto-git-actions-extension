@@ -1,0 +1,55 @@
+{
+  "name": "classroomplugin",
+  "displayName": "ClassroomPlugin Rework(Windows Only)",
+  "description": "new and revamped",
+  "publisher": "WhiteCaT-klein",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "git_plugin.compile",
+        "title": "Compile C Code (WC)"
+      },
+      {
+        "command": "git_plugin.startExtensionAndDebug",
+        "title": "Start Extenstion with Transcript (WC)"
+      },
+      {
+        "command": "git_plugin.stopExtensionAndDebug",
+        "title": "Stop Extenstion and Transcript (WC)"
+      },
+      {
+        "command": "git_plugin.git",
+        "title": "Commit and Push to repo (WC)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.2",
+    "@types/node": "^18.18.5",
+    "@types/vscode": "^1.83.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2"
+  }
+}
