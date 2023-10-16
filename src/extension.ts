@@ -82,10 +82,10 @@ function startExtension() {
 		startGitCommands();
 	}
 
-    const IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
+    const IDLE_TIMEOUT_MS = 10 * 60 * 1000; // 5 minutes
     idleTimeout = setTimeout(() => {
         stopExtension();
-    }, 600000);
+    }, IDLE_TIMEOUT_MS);
 
 }
 

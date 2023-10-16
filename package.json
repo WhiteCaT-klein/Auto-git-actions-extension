@@ -4,6 +4,7 @@
   "description": "new and revamped",
   "publisher": "WhiteCaT-klein",
   "version": "1.0.0",
+  "icon": "images/logo.png",
   "engines": {
     "vscode": "^1.81.0"
   },
