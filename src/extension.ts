@@ -42,14 +42,18 @@ function compileCProgram() {
 
     if (editor) {
         const filePath = editor.document.uri.fsPath;
+        terminal.show();
 
         if (filePath.endsWith('.c')) {
             // On Windows, use 'powershell' for PowerShell execution
            
-
+            const baseFileName = path.basename(filePath, '.c');
             const outputFilePath = path.join(path.dirname(filePath), path.basename(filePath, '.c'));
             const compileCommand = `gcc -g "${filePath}" -o "${outputFilePath}.exe" 2>&1`;
+            const compileErrorsFilePath = path.join(path.dirname(filePath), `${baseFileName}_compile_errors.txt`);
 
+            const logStream = fs.createWriteStream(compileErrorsFilePath, { flags: 'w' });
+            terminal.show();
             // Execute the compile command directly in the terminal
             terminal.sendText(compileCommand, true);
 			const compileProcess = child_process.exec(compileCommand, (error, stdout, stderr) => {
@@ -59,9 +63,24 @@ function compileCProgram() {
 				} else {
 					// Compilation successful, run the program
 					terminal.show();
-					terminal.sendText(`${outputFilePath}.exe`);
+					terminal.sendText(`"${outputFilePath}.exe"`);
 				}
 			});
+            
+            compileProcess.stdout?.pipe(logStream, { end: false });
+            compileProcess.stderr?.pipe(logStream, { end: false });
+
+            compileProcess.on('exit',(code) =>{
+                logStream.end();
+                if(code === 0){
+                    vscode.window.showInformationMessage('Compilation succeeded.');
+                }
+            });
+
+            
+
+
+
         } else {
             vscode.window.showErrorMessage('The active document is not a C program.');
         }
@@ -73,6 +92,7 @@ function compileCProgram() {
 
 function startExtension() {
     // Your debugging code here
+    terminal.show();
     vscode.window.showInformationMessage('Extension Started');
 	startTranscript();
 
@@ -82,7 +102,7 @@ function startExtension() {
 		startGitCommands();
 	}
 
-    const IDLE_TIMEOUT_MS = 10 * 60 * 1000; // 5 minutes
+    const IDLE_TIMEOUT_MS = 30 * 60 * 1000; // 10 minutes
     idleTimeout = setTimeout(() => {
         stopExtension();
     }, IDLE_TIMEOUT_MS);
@@ -91,6 +111,7 @@ function startExtension() {
 
 function stopExtension() {
     // Your debugging code here
+    terminal.show();
     vscode.window.showInformationMessage('Extension Stopped');
 	stopTranscript();
 	if (isGitRunning) {
@@ -107,7 +128,8 @@ function stopExtension() {
 
 function gitActions() {
     // Your Git actions code here
-    vscode.window.showInformationMessage('Git actions command executed.');
+    terminal.show();
+    vscode.window.showInformationMessage('Git actions command executed.');      
 	terminal.sendText('git add .');
     const commitMessage = `committed ${new Date().toLocaleString()}`;
     terminal.sendText(`git commit -m "${commitMessage}"`);
@@ -117,10 +139,11 @@ function gitActions() {
 
 function startGitCommands() {
     vscode.window.showInformationMessage('Git commands are running.');
+    const AUTO_TIMER_MS = 30000;
+
 
     // Execute Git commands every 30 seconds (adjust the interval as needed)
     gitInterval = setInterval(() => {
-
 		const currentDateTime = new Date().toLocaleString();
         const commitMessage = `committed ${currentDateTime}`;
         // Replace this with your actual Git commands
@@ -134,7 +157,7 @@ function startGitCommands() {
 			}, 500);
 		}, 500);
         
-    }, 30000); // 30 seconds interval
+    }, AUTO_TIMER_MS); // 30 seconds interval
 }
 
 function stopGitCommands() {

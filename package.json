@@ -1,13 +1,14 @@
 {
   "name": "classroomplugin",
-  "displayName": "ClassroomPlugin Rework(Windows Only)",
+  "displayName": "ClassroomPlugin Rework FPC(Windows Only)",
   "description": "new and revamped",
   "publisher": "WhiteCaT-klein",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "icon": "images/logo.png",
   "engines": {
     "vscode": "^1.81.0"
   },
+  "repository": {"url": "https://github.com/WhiteCaT-klein/Auto-git-actions-extension.git"},
   "categories": [
     "Other"
   ],
@@ -44,7 +45,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.2",
     "@types/node": "^18.18.5",
-    "@types/vscode": "^1.83.0",
+    "@types/vscode": "^1.81.0",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
     "@vscode/test-electron": "^2.3.4",

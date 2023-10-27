@@ -1,71 +1,36 @@
-# classroomplugin README
+# ClassroomPlugin Rework FPC(Windows Only)
 
-This is the README for your extension "classroomplugin". After writing up a brief description, we recommend including the following sections.
+## Description
+This is a new and revamped version of ClassroomPlugin for Visual Studio Code, designed specifically for Windows.
 
 ## Features
+- **Compile C Code (WC):** Compile your C code using GCC and execute it.
+- **Start Extension with Transcript (WC):** Start an extension with a transcript feature.
+- **Stop Extension and Transcript (WC):** Stop the extension and transcript recording.
+- **Commit and Push to Repo (WC):** Perform Git actions, including adding, committing, and pushing to a repository.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Usage
+1. Open a workspace in Visual Studio Code.
+2. Use the provided commands to compile C code, start the extension with a transcript, stop the extension and transcript, and perform Git actions.
+3. Enjoy the enhanced functionality of this reworked ClassroomPlugin for Windows.
 
 ## Requirements
+- Visual Studio Code version 1.81.0 or higher.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Extension Details
+- **Name:** ClassroomPlugin Rework(Windows Only)
+- **Publisher:** WhiteCaT-klein
+- **Version:** 1.0.0
+- **Categories:** Other
+- **Icon:** ![Logo](images/logo.png)
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## Repository
+Find the source code for this extension on [GitHub](https://github.com/WhiteCaT-klein/Auto-git-actions-extension).
 
 ## Release Notes
+See the [changelog](CHANGELOG.md) for information on updates and new features.
 
-Users appreciate release notes as you update your extension.
 
-### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+## Contact
+For any questions, issues, or feedback, please contact the publisher at dualfox123456789@gmail.com.
