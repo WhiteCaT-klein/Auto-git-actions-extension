@@ -1,36 +1,52 @@
-# ClassroomPlugin Rework FPC(Windows Only)
+# ClassroomPlugin Rework FPC(Windows Only) - Visual Studio Code Extension
 
-## Description
-This is a new and revamped version of ClassroomPlugin for Visual Studio Code, designed specifically for Windows.
+![Extension Icon](images/logo.png)
+
+## Overview
+
+The ClassroomPlugin Rework FPC (Windows Only) is a revamped and improved Visual Studio Code extension designed for Windows users. This extension aims to provide enhanced functionality for working with C programming, Git integration, and debugging using GDB.
 
 ## Features
-- **Compile C Code (WC):** Compile your C code using GCC and execute it.
-- **Start Extension with Transcript (WC):** Start an extension with a transcript feature.
-- **Stop Extension and Transcript (WC):** Stop the extension and transcript recording.
-- **Commit and Push to Repo (WC):** Perform Git actions, including adding, committing, and pushing to a repository.
 
-## Usage
-1. Open a workspace in Visual Studio Code.
-2. Use the provided commands to compile C code, start the extension with a transcript, stop the extension and transcript, and perform Git actions.
-3. Enjoy the enhanced functionality of this reworked ClassroomPlugin for Windows.
+- **Compile C Code**: Easily compile your C programs from within Visual Studio Code.
+- **Start Extension and Debug**: Start the extension and initiate Git commands and debugging.
+- **Stop Extension and Debug**: Stop the extension, halt Git commands, and debugging.
+- **Commit and Push to Repository**: Simplify the process of committing and pushing your changes to a Git repository.
+- **Start GDB Session**: Initiate a GDB debugging session with logging.
+- **Stop GDB Session**: Terminate the GDB debugging session and stop logging.
 
 ## Requirements
-- Visual Studio Code version 1.81.0 or higher.
 
-## Extension Details
-- **Name:** ClassroomPlugin Rework(Windows Only)
-- **Publisher:** WhiteCaT-klein
-- **Version:** 1.0.0
-- **Categories:** Other
-- **Icon:** ![Logo](images/logo.png)
+- Visual Studio Code version 1.81.0 or later.
+
+## Installation
+
+You can install this extension from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/).
+
+## Usage
+
+1. Open a C program in Visual Studio Code.
+2. Use the provided commands from the Command Palette to compile your code, start extensions and debugging, stop extensions, and more.
+3. Enjoy an improved workflow for C programming and version control.
+
+## Configuration
+
+This extension does not require any specific configuration. It is designed to work seamlessly within Visual Studio Code.
+
+## Bugs and Feedback
+
+If you encounter any issues or have feedback, please [submit an issue on GitHub](https://github.com/WhiteCaT-klein/Auto-git-actions-extension/issues).
+
+## License
+
+This extension is licensed under the [MIT License](LICENSE).
 
 ## Repository
-Find the source code for this extension on [GitHub](https://github.com/WhiteCaT-klein/Auto-git-actions-extension).
 
-## Release Notes
-See the [changelog](CHANGELOG.md) for information on updates and new features.
+- [GitHub Repository](https://github.com/WhiteCaT-klein/Auto-git-actions-extension)
 
+---
 
+Happy coding!
 
-## Contact
-For any questions, issues, or feedback, please contact the publisher at dualfox123456789@gmail.com.
+Developed by [WhiteCaT-klein]

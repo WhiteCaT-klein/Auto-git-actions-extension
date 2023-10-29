@@ -9,7 +9,7 @@ let idleTimeout: NodeJS.Timer | undefined;
 
 const terminal = vscode.window.createTerminal({
 	name: 'C Program',
-	shellPath: 'powershell.exe',
+	shellPath: 'cmd.exe',
 });
 
 const { exec } = require('child_process');
@@ -32,7 +32,15 @@ export function activate(context: vscode.ExtensionContext) {
         gitActions();
     });
 
-    context.subscriptions.push(compileDisposable, debugStartDisposable,debugStoptDisposable, gitDisposable);
+    const gdbStartDisposable = vscode.commands.registerCommand('git_plugin.startGDB', () => {
+        startGDB();
+    });
+
+    const gdbStopDisposable = vscode.commands.registerCommand('git_plugin.stopGDB', () => {
+        stopGDB();
+    });
+
+    context.subscriptions.push(compileDisposable, debugStartDisposable,debugStoptDisposable, gitDisposable, gdbStartDisposable, gdbStopDisposable);
 }
 
 export function deactivate() {}
@@ -52,35 +60,44 @@ function compileCProgram() {
             const compileCommand = `gcc -g "${filePath}" -o "${outputFilePath}.exe" 2>&1`;
             const compileErrorsFilePath = path.join(path.dirname(filePath), `${baseFileName}_compile_errors.txt`);
 
-            const logStream = fs.createWriteStream(compileErrorsFilePath, { flags: 'w' });
+            const logStream = fs.createWriteStream(compileErrorsFilePath, { flags: 'a' });
             terminal.show();
+
+            // Add a timestamp
+            const timestamp = new Date().toLocaleString();
+            logStream.write(`Compilation started at ${timestamp}\n`);
+
             // Execute the compile command directly in the terminal
             terminal.sendText(compileCommand, true);
-			const compileProcess = child_process.exec(compileCommand, (error, stdout, stderr) => {
-				if (error) {
-					terminal.show();
-					vscode.window.showErrorMessage('Compilation failed.');
-				} else {
-					// Compilation successful, run the program
-					terminal.show();
-					terminal.sendText(`"${outputFilePath}.exe"`);
-				}
-			});
+            const compileProcess = child_process.exec(compileCommand, (error, stdout, stderr) => {
+                if (error) {
+                    terminal.show();
+                    vscode.window.showErrorMessage('Compilation failed.');
+
+                    // Capture the error message with a timestamp
+                    const errorTimestamp = new Date().toLocaleString();
+                    logStream.write(`Compilation error at ${errorTimestamp}\n`);
+                    logStream.write(`Error message: ${error}\n`);
+                } else {
+                    // Compilation successful, run the program
+                    terminal.show();
+                    terminal.sendText(`"${outputFilePath}.exe"`);
+                }
+            });
             
             compileProcess.stdout?.pipe(logStream, { end: false });
             compileProcess.stderr?.pipe(logStream, { end: false });
 
             compileProcess.on('exit',(code) =>{
+                // Add a final timestamp
+                const endTimestamp = new Date().toLocaleString();
+                logStream.write(`Compilation finished at ${endTimestamp}\n`);
+
                 logStream.end();
                 if(code === 0){
                     vscode.window.showInformationMessage('Compilation succeeded.');
                 }
             });
-
-            
-
-
-
         } else {
             vscode.window.showErrorMessage('The active document is not a C program.');
         }
@@ -90,11 +107,12 @@ function compileCProgram() {
 }
 
 
+
 function startExtension() {
     // Your debugging code here
     terminal.show();
     vscode.window.showInformationMessage('Extension Started');
-	startTranscript();
+	// startTranscript();
 
 
 	if (!isGitRunning) {
@@ -113,7 +131,7 @@ function stopExtension() {
     // Your debugging code here
     terminal.show();
     vscode.window.showInformationMessage('Extension Stopped');
-	stopTranscript();
+	// stopTranscript();
 	if (isGitRunning) {
 		isGitRunning = false;
 		stopGitCommands();
@@ -125,6 +143,65 @@ function stopExtension() {
         idleTimeout = undefined;
     }
 }
+
+
+function startGDB() {
+    terminal.show();
+    const editor = vscode.window.activeTextEditor;
+    if (editor) {
+        const filePath = editor.document.uri.fsPath;
+        terminal.show();
+
+        if (filePath.endsWith('.c')) {
+            const baseFileName = path.basename(filePath, '.c');
+            const outputFilePath = path.join(path.dirname(filePath), baseFileName);
+            const gdbCommand = `gdb ./${baseFileName}`;
+
+            // Execute the GDB command in the terminal
+            terminal.sendText(gdbCommand, true);
+            setTimeout(() => {
+                terminal.sendText('c');
+                setTimeout(() => {
+                    terminal.sendText(`set logging file ${baseFileName}_debug_log.txt`);
+                    setTimeout(() => {
+                        terminal.sendText('set logging enabled on');
+                        terminal.sendText('set logging on');
+                    }, 500);    
+                }, 1000);
+                
+            }, 1000);
+
+        } else {
+            vscode.window.showErrorMessage('The active document is not a C program.');
+        }
+    } else {
+        vscode.window.showInformationMessage('Open a Workspace before using the command.');
+    }
+}
+
+
+
+
+
+
+
+function stopGDB() {
+    // Send text to stop logging and quit the GDB session
+    terminal.show();
+    setTimeout(() => {
+        terminal.sendText('set logging enabled off');
+        terminal.sendText('set loggin off');
+        setTimeout(() => {
+            terminal.sendText('q');
+            setTimeout(() => {
+                gitActions();
+            }, 500);
+        }, 500);
+    }, 500);
+}
+
+
+
 
 function gitActions() {
     // Your Git actions code here
@@ -139,14 +216,14 @@ function gitActions() {
 
 function startGitCommands() {
     vscode.window.showInformationMessage('Git commands are running.');
-    const AUTO_TIMER_MS = 30000;
+    const AUTO_TIMER_MS = 30000; // 30 seconds (30000 in ms)
 
 
-    // Execute Git commands every 30 seconds (adjust the interval as needed)
+    // Execute Git commands every 30 seconds, timer can be adjusted
     gitInterval = setInterval(() => {
 		const currentDateTime = new Date().toLocaleString();
         const commitMessage = `committed ${currentDateTime}`;
-        // Replace this with your actual Git commands
+        // Git commands that are run
 		setTimeout(() => {
 			runGitCommand('git add .');
 			setTimeout(() => {
