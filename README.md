@@ -1,4 +1,4 @@
-# ClassroomPlugin Rework FPC(Windows Only) - Visual Studio Code Extension
+# ClassroomPlugin Rework FPC (Windows Only) - Visual Studio Code Extension
 
 ![Extension Icon](images/logo.png)
 
@@ -12,7 +12,7 @@ The ClassroomPlugin Rework FPC (Windows Only) is a revamped and improved Visual 
 - **Start Extension and Debug**: Start the extension and initiate Git commands and debugging.
 - **Stop Extension and Debug**: Stop the extension, halt Git commands, and debugging.
 - **Commit and Push to Repository**: Simplify the process of committing and pushing your changes to a Git repository.
-- **Start GDB Session**: Initiate a GDB debugging session with logging.
+- **Start GDB Session**: Initiate a GDB debugging session with improved logging.
 - **Stop GDB Session**: Terminate the GDB debugging session and stop logging.
 
 ## Requirements
@@ -44,6 +44,10 @@ This extension is licensed under the [MIT License](LICENSE).
 ## Repository
 
 - [GitHub Repository](https://github.com/WhiteCaT-klein/Auto-git-actions-extension)
+
+## Version 1.0.7
+
+- **Fixed Logging Commands in GDB Session**: Version 1.0.7 addresses an issue with logging commands in the GDB session to ensure accurate capturing of commands used during debugging.
 
 ---
 

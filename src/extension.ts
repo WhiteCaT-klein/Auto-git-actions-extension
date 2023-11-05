@@ -14,7 +14,7 @@ const terminal = vscode.window.createTerminal({
 
 const { exec } = require('child_process');
   
-
+//All available commands in the extension
 export function activate(context: vscode.ExtensionContext) {
     const compileDisposable = vscode.commands.registerCommand('git_plugin.compile', () => {
         compileCProgram();
@@ -44,7 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
-
+//Compile Code
 function compileCProgram() {
     const editor = vscode.window.activeTextEditor;
 
@@ -109,7 +109,6 @@ function compileCProgram() {
 
 
 function startExtension() {
-    // Your debugging code here
     terminal.show();
     vscode.window.showInformationMessage('Extension Started');
 	// startTranscript();
@@ -128,7 +127,6 @@ function startExtension() {
 }
 
 function stopExtension() {
-    // Your debugging code here
     terminal.show();
     vscode.window.showInformationMessage('Extension Stopped');
 	// stopTranscript();
@@ -144,7 +142,7 @@ function stopExtension() {
     }
 }
 
-
+//Start GDB and log session
 function startGDB() {
     terminal.show();
     const editor = vscode.window.activeTextEditor;
@@ -156,16 +154,29 @@ function startGDB() {
             const baseFileName = path.basename(filePath, '.c');
             const outputFilePath = path.join(path.dirname(filePath), baseFileName);
             const gdbCommand = `gdb ./${baseFileName}`;
+            const debugLogFileName = `${baseFileName}_debug.log`;
+
+            // Get the current timestamp
+            const timestamp = new Date().toLocaleString();
+
+            // Construct the timestamped log entry
+            const timestampedLogEntry = `Timestamp: ${timestamp}\n`;
+
+            // Append the timestamped entry to the debug.log file
+            fs.appendFileSync(debugLogFileName, timestampedLogEntry);
 
             // Execute the GDB command in the terminal
             terminal.sendText(gdbCommand, true);
             setTimeout(() => {
                 terminal.sendText('c');
                 setTimeout(() => {
-                    terminal.sendText(`set logging file ${baseFileName}_debug_log.txt`);
+                    terminal.sendText(`set logging file ${debugLogFileName}`);
                     setTimeout(() => {
                         terminal.sendText('set logging enabled on');
                         terminal.sendText('set logging on');
+                        setTimeout(() => {
+                            terminal.sendText('set trace-commands on');
+                        }, 250);
                     }, 500);    
                 }, 1000);
                 
@@ -184,7 +195,7 @@ function startGDB() {
 
 
 
-
+//Quit GDB session 
 function stopGDB() {
     // Send text to stop logging and quit the GDB session
     terminal.show();
@@ -202,7 +213,7 @@ function stopGDB() {
 
 
 
-
+//Perfor git actions equentially
 function gitActions() {
     // Your Git actions code here
     terminal.show();
@@ -213,7 +224,7 @@ function gitActions() {
 	terminal.sendText('git push');
 }
 
-
+// Git commands for start extensions that run in an interval
 function startGitCommands() {
     vscode.window.showInformationMessage('Git commands are running.');
     const AUTO_TIMER_MS = 30000; // 30 seconds (30000 in ms)
@@ -237,6 +248,8 @@ function startGitCommands() {
     }, AUTO_TIMER_MS); // 30 seconds interval
 }
 
+
+//stop interval
 function stopGitCommands() {
     vscode.window.showInformationMessage('Git commands stopped.');
     if (gitInterval) {
@@ -258,7 +271,7 @@ function runGitCommand(command: string) {
     });
 }
 
-// Start the transcript when your extension activates
+// Start the transcript when extension activates
 function startTranscript() {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
@@ -279,7 +292,7 @@ function startTranscript() {
 
 }
 
-// Stop the transcript when your extension deactivates
+// Stop the transcript when extension deactivates
 function stopTranscript() {
     const transcriptStopCommand = 'Stop-Transcript';
 	terminal.sendText(transcriptStopCommand);
