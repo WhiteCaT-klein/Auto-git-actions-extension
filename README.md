@@ -49,6 +49,9 @@ This extension is licensed under the [MIT License](LICENSE).
 
 - **Fixed Logging Commands in GDB Session**: Version 1.0.7 addresses an issue with logging commands in the GDB session to ensure accurate capturing of commands used during debugging.
 
+
+## Version 1.0.8
+- **Compile C code and Start GDB session will now for cd into current open directory**: Version 1.0.8 addresses an issue with compilation fails and GDB log not being captured during usage. 
 ---
 
 Happy coding!

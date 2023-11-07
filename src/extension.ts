@@ -56,6 +56,7 @@ function compileCProgram() {
             // On Windows, use 'powershell' for PowerShell execution
            
             const baseFileName = path.basename(filePath, '.c');
+            const directoryPath = path.dirname(filePath);
             const outputFilePath = path.join(path.dirname(filePath), path.basename(filePath, '.c'));
             const compileCommand = `gcc -g "${filePath}" -o "${outputFilePath}.exe" 2>&1`;
             const compileErrorsFilePath = path.join(path.dirname(filePath), `${baseFileName}_compile_errors.txt`);
@@ -68,6 +69,7 @@ function compileCProgram() {
             logStream.write(`Compilation started at ${timestamp}\n`);
 
             // Execute the compile command directly in the terminal
+            terminal.sendText(`cd "${directoryPath}"`); 
             terminal.sendText(compileCommand, true);
             const compileProcess = child_process.exec(compileCommand, (error, stdout, stderr) => {
                 if (error) {
@@ -119,7 +121,7 @@ function startExtension() {
 		startGitCommands();
 	}
 
-    const IDLE_TIMEOUT_MS = 30 * 60 * 1000; // 10 minutes
+    const IDLE_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
     idleTimeout = setTimeout(() => {
         stopExtension();
     }, IDLE_TIMEOUT_MS);
@@ -164,6 +166,9 @@ function startGDB() {
 
             // Append the timestamped entry to the debug.log file
             fs.appendFileSync(debugLogFileName, timestampedLogEntry);
+
+            const directoryPath = path.dirname(filePath); // Get the directory where the C file is located
+            terminal.sendText(`cd "${directoryPath}"`);
 
             // Execute the GDB command in the terminal
             terminal.sendText(gdbCommand, true);
@@ -272,31 +277,31 @@ function runGitCommand(command: string) {
 }
 
 // Start the transcript when extension activates
-function startTranscript() {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-        vscode.window.showErrorMessage('No active text editor found.');
-        return;
-    }
+// function startTranscript() {
+//     const editor = vscode.window.activeTextEditor;
+//     if (!editor) {
+//         vscode.window.showErrorMessage('No active text editor found.');
+//         return;
+//     }
 
-	const filePath = editor.document.uri.fsPath;
-	if (filePath.endsWith('.c')) {
-		const fileName = path.basename(filePath);
-    	const fileNameWithoutExtension = path.parse(fileName).name;
-    	const transcriptFilePath = path.join(path.dirname(filePath), `${fileNameWithoutExtension}_session.txt`);
+// 	const filePath = editor.document.uri.fsPath;
+// 	if (filePath.endsWith('.c')) {
+// 		const fileName = path.basename(filePath);
+//     	const fileNameWithoutExtension = path.parse(fileName).name;
+//     	const transcriptFilePath = path.join(path.dirname(filePath), `${fileNameWithoutExtension}_session.txt`);
     
-    	const transcriptStartCommand = `Start-Transcript -Path "${transcriptFilePath}"`;
-		terminal.sendText(transcriptStartCommand);
-    	vscode.window.showInformationMessage(`Transcript started for ${fileName}. Run your commands...`);
-	}
+//     	const transcriptStartCommand = `Start-Transcript -Path "${transcriptFilePath}"`;
+// 		terminal.sendText(transcriptStartCommand);
+//     	vscode.window.showInformationMessage(`Transcript started for ${fileName}. Run your commands...`);
+// 	}
 
-}
+// }
 
-// Stop the transcript when extension deactivates
-function stopTranscript() {
-    const transcriptStopCommand = 'Stop-Transcript';
-	terminal.sendText(transcriptStopCommand);
-    vscode.window.showInformationMessage('Transcript stopped.');
-}
+// // Stop the transcript when extension deactivates
+// function stopTranscript() {
+//     const transcriptStopCommand = 'Stop-Transcript';
+// 	terminal.sendText(transcriptStopCommand);
+//     vscode.window.showInformationMessage('Transcript stopped.');
+// }
 
 

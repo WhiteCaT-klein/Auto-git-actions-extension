@@ -3,7 +3,7 @@
   "displayName": "ClassroomPlugin Rework FPC(Windows Only)",
   "description": "new and revamped",
   "publisher": "WhiteCaT-klein",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "icon": "images/logo.png",
   "engines": {
     "vscode": "^1.81.0"
