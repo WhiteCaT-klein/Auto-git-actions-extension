@@ -18,6 +18,7 @@ The ClassroomPlugin Rework FPC (Windows Only) is a revamped and improved Visual 
 ## Requirements
 
 - Visual Studio Code version 1.81.0 or later.
+- Node.js
 
 ## Installation
 
@@ -32,10 +33,12 @@ You can install this extension from the [Visual Studio Code Marketplace](https:/
 
 2. Open the project in Visual Studio Code:
     
+    ```bash
     code classroomplugin
 
 3. Install dependecies by running the below command in the terminal
-
+    
+    ```bash
     npm install
 
 4. Press 'F5' to start the extension in debug mode.
